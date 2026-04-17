@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>✦ Ethereal Birthday | For My Dearest Sister ✦</title>
+    <!-- Canvas Confetti & GSAP Premium -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Elegant Serif + Modern Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0c0a14;
+            background-image: radial-gradient(circle at 30% 20%, rgba(100, 55, 80, 0.5), #05030a 90%);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .bg-aura {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 70% 30%, rgba(255, 190, 130, 0.08), transparent 70%);
+            z-index: 0;
+        }
+
+        .screen {
+            width: 100%;
+            max-width: 900px;
+            background: transparent;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hidden { display: none !important; }
+
+        /* ========== QR STAGE – PREMIUM GLASS ========== */
+        .glass-pavilion {
+            background: rgba(18, 14, 28, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 72px;
+            border: 1px solid rgba(255, 205, 150, 0.35);
+            box-shadow: 0 40px 60px -20px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,245,0.1);
+            padding: 2rem 2rem;
+            text-align: center;
+        }
+
+        .gift-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #FFE6C7, #FFB37C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .gift-orb {
+            background: radial-gradient(ellipse at 35% 40%, #d44a28, #861e1e);
+            width: 290px;
+            height: 290px;
+            margin: 28px auto;
+            border-radius: 85px 30px 85px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 35px 50px rgba(0,0,0,0.5), inset 0 1px 4px #ffddb0;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+            position: relative;
+            border: 1px solid rgba(255,200,120,0.7);
+        }
+        .gift-orb:hover { transform: scale(1.02); }
+        .gift-orb::before { content: "👑"; font-size: 60px; position: absolute; top: -38px; left: -30px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)); }
+        .gift-orb::after { content: "✨"; font-size: 54px; position: absolute; bottom: -30px; right: -30px; }
+        #qrcodeCanvas { background: #fffef7; padding: 10px; border-radius: 52px; box-shadow: 0 12px 22px rgba(0,0,0,0.3); }
+        #qrcodeCanvas img, #qrcodeCanvas { width: 220px; height: 220px; border-radius: 44px; }
+        .hint-gold { background: rgba(0,0,0,0.4); backdrop-filter: blur(12px); display: inline-flex; align-items: center; gap: 16px; padding: 10px 30px; border-radius: 60px; color: #fff2df; border: 1px solid rgba(255,190,100,0.5); margin-top: 18px; }
+
+        /* ========== COUNTDOWN ========== */
+        .countdown-crystal { background: rgba(20,14,30,0.7); backdrop-filter: blur(20px); border-radius: 80px; text-align: center; padding: 3rem 1.5rem; border: 1px solid rgba(255,180,100,0.4); }
+        .timer-lux { font-size: 6rem; font-weight: 800; background: linear-gradient(145deg, #ffe0a3, #ffb256); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: monospace; letter-spacing: 12px; display: inline-flex; align-items: center; gap: 18px; }
+
+        /* ========== GOLDEN RAIN ========== */
+        .rain-stage-premium { position: relative; min-height: 620px; background: #0e0a16; border-radius: 64px; overflow: hidden; box-shadow: 0 30px 50px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,200,120,0.2); }
+        #premiumRainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; }
+
+        /* ========== DIARY BOOK ========== */
+        .diary-sanctum { perspective: 2000px; }
+        .cover-royal {
+            background: linear-gradient(125deg, #2f211a, #1c130f);
+            border-radius: 48px 24px 48px 24px;
+            min-height: 580px;
+            box-shadow: 30px 35px 60px rgba(0,0,0,0.7), inset -1px 0 0 #e4bc88;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid rgba(200,140,70,0.6);
+        }
+        .cover-royal h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: #f7e2c5; text-shadow: 0 4px 12px #341e12; }
+        .lock-emblem { font-size: 4.2rem; margin: 20px 0; color: #eac084; }
+        .secret-input { background: #241d17; border: 1.5px solid #dfb27a; padding: 14px 26px; border-radius: 60px; width: 250px; text-align: center; color: #ffefcf; font-size: 1rem; outline: none; }
+        .unlock-royal { background: #b95932; border: none; padding: 12px 36px; border-radius: 60px; color: white; font-weight: 600; margin-top: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 0 #542012; }
+        .book-elegance { background: #fef6ec; border-radius: 44px 24px 44px 24px; padding: 28px 26px; box-shadow: 0 30px 55px rgba(0,0,0,0.35); animation: openBookLux 0.6s cubic-bezier(0.2,0.9,0.3,1.1) forwards; }
+        @keyframes openBookLux { 0% { opacity: 0; transform: rotateY(-110deg) scale(0.92); } 100% { opacity: 1; transform: rotateY(0deg) scale(1); } }
+        .nav-ornate { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; gap: 15px; }
+        .nav-btn { background: rgba(150,80,50,0.9); border: none; padding: 10px 28px; border-radius: 50px; font-weight: 600; color: #fff7ea; display: inline-flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.1s; }
+        .nav-btn:active { transform: translateY(2px); }
+        .page-badge { background: #e7d3b8; padding: 8px 26px; border-radius: 60px; font-weight: 600; color: #532e1c; }
+        .page-card-luxury { background: #fffcf5; border-radius: 40px; padding: 28px 26px; box-shadow: 0 15px 30px rgba(0,0,0,0.08), inset 0 0 0 1px #fff0dd; min-height: 460px; transition: transform 0.2s ease, opacity 0.15s; }
+        .typing-splendor { display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 600; font-family: 'Playfair Display', serif; color: #bc4e2c; text-align: center; gap: 15px; background: #fffaf2; border-radius: 36px; padding: 40px 20px; min-height: 380px; }
+        .photo-memoir { display: flex; flex-direction: column; gap: 18px; }
+        .photo-memoir img { width: 100%; border-radius: 36px; border: 3px solid #efcf9e; box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .message-card { background: #fff3e6; padding: 20px; border-radius: 32px; display: flex; gap: 14px; align-items: flex-start; border-left: 5px solid #e08a5a; }
+        .quote-elegance { background: #f7ede2; padding: 14px 20px; border-radius: 28px; font-style: italic; font-family: 'Playfair Display', serif; display: flex; gap: 12px; align-items: center; }
+        .final-message-lux { background: linear-gradient(145deg, #faead8, #f7e0c6); border-radius: 48px; padding: 32px 24px; text-align: center; font-size: 1.2rem; font-weight: 500; }
+        
+        /* ========== ✦ REDESIGNED ENVELOPE – LUXURY SEALED LETTER ✦ ========== */
+        .envelope-luxury {
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .envelope-card {
+            width: 300px;
+            background: #fffaf0;
+            border-radius: 28px;
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(230, 180, 110, 0.6);
+        }
+        .envelope-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -12px black;
+        }
+        .envelope-seal {
+            background: linear-gradient(145deg, #e5c99c, #dbb67a);
+            padding: 28px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 2px dashed #b57a48;
+        }
+        .envelope-seal i {
+            font-size: 3.2rem;
+            color: #8b3c28;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        .envelope-seal h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-top: 10px;
+            color: #5e2e1c;
+            letter-spacing: 2px;
+        }
+        .envelope-body {
+            background: #fffef7;
+            padding: 20px 25px 25px;
+            text-align: center;
+        }
+        .envelope-body p {
+            color: #a14f2e;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .wax-stamp {
+            width: 52px;
+            height: 52px;
+            background: #c4663a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px auto 0;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            border: 1px solid #e7b47a;
+        }
+        .wax-stamp i {
+            font-size: 1.8rem;
+            color: #f7e2b0;
+        }
+        .letter-content {
+            background: #fffdf5;
+            border-radius: 28px;
+            padding: 24px;
+            margin-top: 20px;
+            border: 1px solid #f3daae;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            animation: fadeSlideUp 0.5s ease forwards;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.5;
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .music-crystal {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: rgba(30,22,38,0.8);
+            backdrop-filter: blur(14px);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ffddb0;
+            cursor: pointer;
+            border: 1px solid #f8bc7a;
+            z-index: 999;
+        }
+        footer { margin-top: 24px; font-size: 0.7rem; opacity: 0.8; text-align: center; color: #dbbc97; }
+        .error-soft { color: #ffbc8a; margin-top: 8px; font-size: 0.8rem; }
+        i { pointer-events: none; }
+    </style>
+</head>
+<body>
+<div class="bg-aura"></div>
+<div class="screen" id="appContainer">
+    <!-- QR STAGE -->
+    <div id="qrStage">
+        <div class="glass-pavilion">
+            <div class="gift-header"><i class="fas fa-crown"></i> Celestial Keepsake <i class="fas fa-gem"></i></div>
+            <div class="gift-orb" id="giftTapZone"><div id="qrcodeCanvas"></div></div>
+            <div class="hint-gold"><i class="fas fa-qrcode"></i> SCAN OR TOUCH THE GIFT <i class="fas fa-hand-peace"></i></div>
+            <footer><i class="fas fa-feather-alt"></i> For the one who makes life magical</footer>
+        </div>
+    </div>
+
+    <!-- COUNTDOWN STAGE -->
+    <div id="countdownStage" class="hidden">
+        <div class="countdown-crystal">
+            <div class="timer-lux" id="countdownTimer"><i class="fas fa-hourglass-half"></i> 5</div>
+            <p style="margin-top: 28px; color: #ffdbb5;"><i class="fas fa-sparkles"></i> Stardust is gathering ...</p>
+        </div>
+    </div>
+
+    <!-- RAIN STAGE -->
+    <div id="rainStage" class="hidden">
+        <div class="rain-stage-premium"><canvas id="premiumRainCanvas"></canvas></div>
+    </div>
+
+    <!-- FINAL DIARY -->
+    <div id="diaryFinalStage" class="hidden">
+        <div class="diary-sanctum">
+            <div id="bookCoverElement" class="cover-royal">
+                <h2><i class="fas fa-book-open"></i> Memoria Aeterna <i class="fas fa-heart"></i></h2>
+                <div class="lock-emblem"><i class="fas fa-lock"></i> <i class="fas fa-feather"></i></div>
+                <p style="color: #ecc897;">Her sacred date unlocks the chapters</p>
+                <input type="text" id="coverPasswordField" class="secret-input" placeholder="04-18" autocomplete="off">
+                <button id="coverUnlockButton" class="unlock-royal"><i class="fas fa-key"></i> Open the Diary</button>
+                <div id="coverErrorMsg" class="error-soft"></div>
+            </div>
+            <div id="bookInside" class="hidden">
+                <div class="book-elegance">
+                    <div class="nav-ornate">
+                        <button id="prevPageBtnReal" class="nav-btn"><i class="fas fa-arrow-left"></i> PREV</button>
+                        <span id="pageNumberSpan" class="page-badge"><i class="fas fa-bookmark"></i> Page 1 / 6</span>
+                        <button id="nextPageBtnReal" class="nav-btn">NEXT <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div id="dynamicPageContentArea" class="page-card-luxury"></div>
+                    <footer><i class="fas fa-infinity"></i> With all my heart — your little sister</footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="musicControl" class="music-crystal"><i class="fas fa-music-slash"></i></div>
+
+<script>
+    // ---------- GLOBAL STATE ----------
+    let currentScreen = 'qr';
+    let countdownInterval = null;
+    let rainAnimFrame = null;
+    let rainCtx = null, rainCanvasElem = null;
+    let fallingLetters = [];
+    let diaryPagesData = [];
+    let currentPage = 0;
+    let typingIntervalId = null;
+    let bgAudio = null;
+    let musicActive = false;
+    let flipBlock = false;
+
+    // DOM elements
+    const qrStageDiv = document.getElementById('qrStage');
+    const countdownDiv = document.getElementById('countdownStage');
+    const rainDiv = document.getElementById('rainStage');
+    const diaryDiv = document.getElementById('diaryFinalStage');
+    const bookCoverDiv = document.getElementById('bookCoverElement');
+    const bookOpenDiv = document.getElementById('bookInside');
+    const passField = document.getElementById('coverPasswordField');
+    const unlockDiaryBtn = document.getElementById('coverUnlockButton');
+    const errorMsgSpan = document.getElementById('coverErrorMsg');
+    const prevBtn = document.getElementById('prevPageBtnReal');
+    const nextBtn = document.getElementById('nextPageBtnReal');
+    const pageIndicator = document.getElementById('pageNumberSpan');
+    const dynamicContent = document.getElementById('dynamicPageContentArea');
+    const musicBtn = document.getElementById('musicControl');
+
+    function setStage(stage) {
+        qrStageDiv.classList.add('hidden');
+        countdownDiv.classList.add('hidden');
+        rainDiv.classList.add('hidden');
+        diaryDiv.classList.add('hidden');
+        if (stage === 'qr') qrStageDiv.classList.remove('hidden');
+        if (stage === 'countdown') countdownDiv.classList.remove('hidden');
+        if (stage === 'rain') rainDiv.classList.remove('hidden');
+        if (stage === 'diary') diaryDiv.classList.remove('hidden');
+        currentScreen = stage;
+    }
+
+    // Music
+    function initMusic() {
+        try {
+            bgAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
+            bgAudio.loop = true;
+            bgAudio.volume = 0.22;
+        } catch(e) { }
+        musicBtn.onclick = () => {
+            if (bgAudio) {
+                if (musicActive) {
+                    bgAudio.pause();
+                    musicBtn.innerHTML = '<i class="fas fa-music-slash"></i>';
+                } else {
+                    bgAudio.play().catch(e=>console.log);
+                    musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                }
+                musicActive = !musicActive;
+            }
+        };
+    }
+
+    // Countdown
+    function launchCountdownSequence() {
+        setStage('countdown');
+        let seconds = 5;
+        const timerSpan = document.getElementById('countdownTimer');
+        timerSpan.innerHTML = `<i class="fas fa-hourglass-half"></i> ${seconds}`;
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
+            seconds--;
+            if (seconds >= 0) timerSpan.innerHTML = `<i class="fas fa-hourglass-half"></i> ${seconds}`;
+            if (seconds < 0) {
+                clearInterval(countdownInterval);
+                startGoldenRainfall();
+            }
+        }, 1000);
+    }
+
+    // Golden rain
+    function startGoldenRainfall() {
+        setStage('rain');
+        const container = document.querySelector('.rain-stage-premium');
+        const canvas = document.getElementById('premiumRainCanvas');
+        rainCanvasElem = canvas;
+        const rect = container.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        rainCtx = canvas.getContext('2d');
+        const lettersPool = "HAPPY BIRTHDAY SIS".split('');
+        fallingLetters = [];
+        for (let i = 0; i < 160; i++) {
+            fallingLetters.push({
+                char: lettersPool[Math.floor(Math.random() * lettersPool.length)],
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                speed: 1.6 + Math.random() * 6,
+                size: 20 + Math.random() * 34,
+                color: `hsl(${38 + Math.random() * 28}, 88%, 62%)`
+            });
+        }
+        function drawRainLoop() {
+            if (!rainCtx || !rainCanvasElem) return;
+            rainCtx.clearRect(0, 0, rainCanvasElem.width, rainCanvasElem.height);
+            for (let l of fallingLetters) {
+                rainCtx.font = `${l.size}px "Playfair Display", cursive`;
+                rainCtx.fillStyle = l.color;
+                rainCtx.shadowBlur = 4;
+                rainCtx.shadowColor = "#ffbc6e";
+                rainCtx.fillText(l.char, l.x, l.y);
+                l.y += l.speed;
+                if (l.y > rainCanvasElem.height) {
+                    l.y = -35;
+                    l.x = Math.random() * rainCanvasElem.width;
+                    l.char = lettersPool[Math.floor(Math.random() * lettersPool.length)];
+                }
+            }
+            rainAnimFrame = requestAnimationFrame(drawRainLoop);
+        }
+        if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
+        drawRainLoop();
+        setTimeout(() => {
+            if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
+            showLuxuryDiary();
+        }, 4800);
+    }
+
+    // ========== ✦ REDESIGNED ENVELOPE (luxury sealed letter) ✦ ==========
+    function createLuxuryEnvelope() {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'envelope-luxury';
+        
+        const envelopeCard = document.createElement('div');
+        envelopeCard.className = 'envelope-card';
+        
+        // Seal section
+        const sealDiv = document.createElement('div');
+        sealDiv.className = 'envelope-seal';
+        sealDiv.innerHTML = `<i class="fas fa-envelope"></i><h4>SEALED WITH LOVE</h4>`;
+        
+        // Body preview
+        const bodyDiv = document.createElement('div');
+        bodyDiv.className = 'envelope-body';
+        bodyDiv.innerHTML = `<p><i class="fas fa-feather-alt"></i> A secret message awaits <i class="fas fa-star"></i></p>
+                             <div class="wax-stamp"><i class="fas fa-heart"></i></div>`;
+        
+        envelopeCard.appendChild(sealDiv);
+        envelopeCard.appendChild(bodyDiv);
+        
+        // Hidden letter content (initially hidden)
+        const letterContent = document.createElement('div');
+        letterContent.className = 'letter-content';
+        letterContent.style.display = 'none';
+        letterContent.innerHTML = `<i class="fas fa-quote-left" style="font-size: 1.8rem; color:#bd6b42; margin-bottom: 12px; display: block;"></i>
+                                   <strong style="font-size: 1.2rem;">My Dearest Big Sister,</strong><br/><br/>
+                                   You are the poetry written in the margins of my life — the warmth that turns ordinary days into gold. 
+                                   Every memory with you is a treasure I hold close. On your birthday, I wish you oceans of joy, 
+                                   galaxies of laughter, and the deepest love you’ve given me tenfold.<br/><br/>
+                                   You are my hero, my guide, and my safest harbor. I love you infinitely.<br/><br/>
+                                   <i class="fas fa-feather"></i> <em>Forever your lil bro</em> <i class="fas fa-crown"></i>`;
+        
+        wrapper.appendChild(envelopeCard);
+        wrapper.appendChild(letterContent);
+        
+        let isOpened = false;
+        envelopeCard.style.cursor = 'pointer';
+        envelopeCard.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!isOpened) {
+                letterContent.style.display = 'block';
+                letterContent.style.animation = 'fadeSlideUp 0.5s ease';
+                // Transform envelope visual to "opened"
+                sealDiv.style.background = "linear-gradient(145deg, #dbbc8c, #c99760)";
+                bodyDiv.innerHTML = `<p><i class="fas fa-check-circle"></i> Letter opened with love <i class="fas fa-heart"></i></p>
+                                     <div class="wax-stamp" style="background:#a55232;"><i class="fas fa-unlock-alt"></i></div>`;
+                canvasConfetti({ particleCount: 140, spread: 70, origin: { y: 0.6 }, colors: ['#ffbc7a', '#ff9f6e', '#f7cf8a'] });
+                if (bgAudio && !musicActive) {
+                    bgAudio.play().catch(e=>{});
+                    musicActive = true;
+                    musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                }
+                isOpened = true;
+            }
+        });
+        return wrapper;
+    }
+
+    // Build diary pages (6 pages total, envelope redesigned)
+    function buildDiaryPages() {
+        diaryPagesData = [
+            { type: 'typing', text: 'Happy birthday, my beautiful sister' },
+            { type: 'photo', img: 'IMG_9983.JPG', msg: 'You are the melody of my childhood, the anchor of my soul. Thank you for every hug and every prayer.', quote: '“A sister is a little bit of childhood that can never be lost.”' },
+            { type: 'photo', img: 'WhatsApp Image 2026-04-18 at 00.30.35.jpeg', msg: 'Through every season, your love has been my safe harbor. I treasure every laugh and every late night talk.', quote: '“Big sisters are the architects of beautiful memories.”' },
+            { type: 'photo', img: 'WhatsApp Image 2026-04-18 at 00.30.367.jpeg', msg: 'May your days be filled with golden light and boundless wonder. You taught me how to shine.', quote: '“To my sister: the world is softer because of you.”' },
+            { type: 'envelope' },  // REDESIGNED ENVELOPE
+            { type: 'final', finalMsg: '🎂✨ Happiest Birthday, my everything. This gift is just a small echo of my infinite love for you. You are pure magic, and I will always be your biggest fan. I love you more than all the stars. ✨🎂' }
+        ];
+    }
+
+    function renderCurrentPage(idx) {
+        const data = diaryPagesData[idx];
+        dynamicContent.innerHTML = '';
+        if (data.type === 'typing') {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-splendor';
+            typingDiv.innerHTML = '<i class="fas fa-heart" style="color:#d9532f;"></i> ';
+            dynamicContent.appendChild(typingDiv);
+            if (typingIntervalId) clearInterval(typingIntervalId);
+            let charPos = 0;
+            const fullMsg = data.text;
+            typingDiv.innerText = '❤️ ';
+            function typeLetter() {
+                if (charPos < fullMsg.length) {
+                    typingDiv.innerText = '❤️ ' + fullMsg.slice(0, charPos+1) + (charPos % 2 === 0 ? ' ✦' : '');
+                    charPos++;
+                } else {
+                    clearInterval(typingIntervalId);
+                    typingDiv.innerHTML = '<i class="fas fa-crown"></i> ' + fullMsg + ' <i class="fas fa-sparkles"></i>';
+                    typingIntervalId = null;
+                }
+            }
+            typingIntervalId = setInterval(typeLetter, 70);
+        } 
+        else if (data.type === 'photo') {
+            const photoContainer = document.createElement('div');
+            photoContainer.className = 'photo-memoir';
+            const imgEl = document.createElement('img');
+            imgEl.src = data.img;
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message-card';
+            msgDiv.innerHTML = `<i class="fas fa-comment-dots" style="font-size: 1.5rem; color:#c9673c;"></i><span>${data.msg}</span>`;
+            const quoteDiv = document.createElement('div');
+            quoteDiv.className = 'quote-elegance';
+            quoteDiv.innerHTML = `<i class="fas fa-quote-left" style="color:#b8865b;"></i> ${data.quote}`;
+            photoContainer.appendChild(imgEl);
+            photoContainer.appendChild(msgDiv);
+            photoContainer.appendChild(quoteDiv);
+            dynamicContent.appendChild(photoContainer);
+        }
+        else if (data.type === 'envelope') {
+            // Insert the redesigned luxury envelope
+            dynamicContent.appendChild(createLuxuryEnvelope());
+        }
+        else if (data.type === 'final') {
+            const finalContainer = document.createElement('div');
+            finalContainer.className = 'final-message-lux';
+            finalContainer.innerHTML = `<i class="fas fa-cake-candles" style="font-size: 2rem; margin-bottom: 12px; display: block;"></i> ${data.finalMsg}`;
+            dynamicContent.appendChild(finalContainer);
+            const iconRow = document.createElement('div');
+            iconRow.style.fontSize = '2rem';
+            iconRow.style.marginTop = '20px';
+            iconRow.style.textAlign = 'center';
+            iconRow.innerHTML = '<i class="fas fa-heart"></i> <i class="fas fa-infinity"></i> <i class="fas fa-star"></i>';
+            dynamicContent.appendChild(iconRow);
+            canvasConfetti({ particleCount: 320, spread: 110, origin: { y: 0.7 }, startVelocity: 22, colors: ['#ffaa66', '#ff8c66', '#ffd48a'] });
+        }
+        pageIndicator.innerHTML = `<i class="fas fa-bookmark"></i> Page ${idx+1} / ${diaryPagesData.length}`;
+    }
+
+    function flipPage(direction = 'next') {
+        if (flipBlock) return;
+        flipBlock = true;
+        dynamicContent.style.transition = 'transform 0.2s ease, opacity 0.15s';
+        dynamicContent.style.transform = direction === 'next' ? 'rotateY(6deg) scale(0.97)' : 'rotateY(-6deg) scale(0.97)';
+        dynamicContent.style.opacity = '0.7';
+        setTimeout(() => {
+            renderCurrentPage(currentPage);
+            dynamicContent.style.transform = 'rotateY(0deg) scale(1)';
+            dynamicContent.style.opacity = '1';
+            setTimeout(() => {
+                dynamicContent.style.transition = '';
+                flipBlock = false;
+            }, 180);
+        }, 130);
+    }
+
+    function prevPageHandler() {
+        if (currentPage > 0) {
+            if (typingIntervalId) clearInterval(typingIntervalId);
+            currentPage--;
+            flipPage('prev');
+        }
+    }
+    function nextPageHandler() {
+        if (currentPage < diaryPagesData.length - 1) {
+            if (typingIntervalId) clearInterval(typingIntervalId);
+            currentPage++;
+            flipPage('next');
+        }
+    }
+
+    function unlockBookMagic() {
+        const code = passField.value.trim();
+        if (code === "04-18" || code === "04/18" || code === "4-18" || code === "0418") {
+            errorMsgSpan.innerText = '';
+            gsap.to(bookCoverDiv, { duration: 0.45, rotateY: -100, opacity: 0, ease: "power2.in", onComplete: () => {
+                bookCoverDiv.classList.add('hidden');
+                bookOpenDiv.classList.remove('hidden');
+                buildDiaryPages();
+                currentPage = 0;
+                renderCurrentPage(0);
+            }});
+        } else {
+            errorMsgSpan.innerHTML = '<i class="fas fa-times-circle"></i> Not the sacred date. (04-18)';
+        }
+    }
+
+    function showLuxuryDiary() {
+        setStage('diary');
+        bookCoverDiv.classList.remove('hidden');
+        bookOpenDiv.classList.add('hidden');
+        bookCoverDiv.style.opacity = '1';
+        bookCoverDiv.style.transform = '';
+        passField.value = '';
+        errorMsgSpan.innerText = '';
+        if (typingIntervalId) clearInterval(typingIntervalId);
+    }
+
+    // Initialization
+    function initApplication() {
+        const qrContainer = document.getElementById('qrcodeCanvas');
+        if (qrContainer) {
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: window.location.href,
+                width: 220,
+                height: 220,
+                colorDark: "#973e26",
+                colorLight: "#fffaf0"
+            });
+        }
+        document.getElementById('giftTapZone').addEventListener('click', () => {
+            if (currentScreen === 'qr') launchCountdownSequence();
+        });
+        unlockDiaryBtn.addEventListener('click', unlockBookMagic);
+        passField.addEventListener('keypress', (e) => { if (e.key === 'Enter') unlockBookMagic(); });
+        prevBtn.addEventListener('click', prevPageHandler);
+        nextBtn.addEventListener('click', nextPageHandler);
+        initMusic();
+        window.addEventListener('resize', () => {
+            if (currentScreen === 'rain' && rainCanvasElem && rainCanvasElem.parentElement) {
+                const rect = document.querySelector('.rain-stage-premium')?.getBoundingClientRect();
+                if (rect) { rainCanvasElem.width = rect.width; rainCanvasElem.height = rect.height; }
+            }
+        });
+    }
+    window.onload = initApplication;
+</script>
+</body>
+</html>
