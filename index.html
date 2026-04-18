@@ -10,14 +10,13 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Elegant Serif + Modern Sans -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
 
         body {
@@ -120,22 +119,23 @@
         .cover-royal h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: #f7e2c5; text-shadow: 0 4px 12px #341e12; }
         .lock-emblem { font-size: 4.2rem; margin: 20px 0; color: #eac084; }
         .secret-input { background: #241d17; border: 1.5px solid #dfb27a; padding: 14px 26px; border-radius: 60px; width: 250px; text-align: center; color: #ffefcf; font-size: 1rem; outline: none; }
-        .unlock-royal { background: #b95932; border: none; padding: 12px 36px; border-radius: 60px; color: white; font-weight: 600; margin-top: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 0 #542012; }
+        .unlock-royal { background: #b95932; border: none; padding: 12px 36px; border-radius: 60px; color: white; font-weight: 600; margin-top: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 0 #542012; transition: 0.08s linear; }
+        .unlock-royal:active { transform: translateY(2px); box-shadow: 0 2px 0 0 #542012; }
         .book-elegance { background: #fef6ec; border-radius: 44px 24px 44px 24px; padding: 28px 26px; box-shadow: 0 30px 55px rgba(0,0,0,0.35); animation: openBookLux 0.6s cubic-bezier(0.2,0.9,0.3,1.1) forwards; }
         @keyframes openBookLux { 0% { opacity: 0; transform: rotateY(-110deg) scale(0.92); } 100% { opacity: 1; transform: rotateY(0deg) scale(1); } }
         .nav-ornate { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; gap: 15px; }
-        .nav-btn { background: rgba(150,80,50,0.9); border: none; padding: 10px 28px; border-radius: 50px; font-weight: 600; color: #fff7ea; display: inline-flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.1s; }
+        .nav-btn { background: rgba(150,80,50,0.9); border: none; padding: 10px 28px; border-radius: 50px; font-weight: 600; color: #fff7ea; display: inline-flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.08s linear; }
         .nav-btn:active { transform: translateY(2px); }
         .page-badge { background: #e7d3b8; padding: 8px 26px; border-radius: 60px; font-weight: 600; color: #532e1c; }
         .page-card-luxury { background: #fffcf5; border-radius: 40px; padding: 28px 26px; box-shadow: 0 15px 30px rgba(0,0,0,0.08), inset 0 0 0 1px #fff0dd; min-height: 460px; transition: transform 0.2s ease, opacity 0.15s; }
-        .typing-splendor { display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 600; font-family: 'Playfair Display', serif; color: #bc4e2c; text-align: center; gap: 15px; background: #fffaf2; border-radius: 36px; padding: 40px 20px; min-height: 380px; }
+        .typing-splendor { display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 600; font-family: 'Playfair Display', serif; color: #bc4e2c; text-align: center; gap: 15px; background: #fffaf2; border-radius: 36px; padding: 40px 20px; min-height: 380px; flex-wrap: wrap; }
         .photo-memoir { display: flex; flex-direction: column; gap: 18px; }
-        .photo-memoir img { width: 100%; border-radius: 36px; border: 3px solid #efcf9e; box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .photo-memoir img { width: 100%; border-radius: 36px; border: 3px solid #efcf9e; box-shadow: 0 12px 24px rgba(0,0,0,0.1); object-fit: cover; max-height: 320px; }
         .message-card { background: #fff3e6; padding: 20px; border-radius: 32px; display: flex; gap: 14px; align-items: flex-start; border-left: 5px solid #e08a5a; }
         .quote-elegance { background: #f7ede2; padding: 14px 20px; border-radius: 28px; font-style: italic; font-family: 'Playfair Display', serif; display: flex; gap: 12px; align-items: center; }
         .final-message-lux { background: linear-gradient(145deg, #faead8, #f7e0c6); border-radius: 48px; padding: 32px 24px; text-align: center; font-size: 1.2rem; font-weight: 500; }
         
-        /* ========== ✦ REDESIGNED ENVELOPE – LUXURY SEALED LETTER ✦ ========== */
+        /* ========== LUXURY ENVELOPE ========== */
         .envelope-luxury {
             background: transparent;
             display: flex;
@@ -145,53 +145,27 @@
             margin: 10px 0;
         }
         .envelope-card {
-            width: 300px;
+            width: 100%;
+            max-width: 340px;
             background: #fffaf0;
             border-radius: 28px;
             box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3);
             cursor: pointer;
             transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
             overflow: hidden;
-            position: relative;
             border: 1px solid rgba(230, 180, 110, 0.6);
         }
-        .envelope-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 30px 45px -12px black;
-        }
+        .envelope-card:hover { transform: translateY(-6px); box-shadow: 0 30px 45px -12px black; }
         .envelope-seal {
             background: linear-gradient(145deg, #e5c99c, #dbb67a);
             padding: 28px 20px;
             text-align: center;
-            position: relative;
             border-bottom: 2px dashed #b57a48;
         }
-        .envelope-seal i {
-            font-size: 3.2rem;
-            color: #8b3c28;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
-        .envelope-seal h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            margin-top: 10px;
-            color: #5e2e1c;
-            letter-spacing: 2px;
-        }
-        .envelope-body {
-            background: #fffef7;
-            padding: 20px 25px 25px;
-            text-align: center;
-        }
-        .envelope-body p {
-            color: #a14f2e;
-            font-weight: 500;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
+        .envelope-seal i { font-size: 3.2rem; color: #8b3c28; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .envelope-seal h4 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 10px; color: #5e2e1c; letter-spacing: 2px; }
+        .envelope-body { background: #fffef7; padding: 20px 25px 25px; text-align: center; }
+        .envelope-body p { color: #a14f2e; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 12px; }
         .wax-stamp {
             width: 52px;
             height: 52px;
@@ -204,10 +178,7 @@
             box-shadow: 0 3px 8px rgba(0,0,0,0.2);
             border: 1px solid #e7b47a;
         }
-        .wax-stamp i {
-            font-size: 1.8rem;
-            color: #f7e2b0;
-        }
+        .wax-stamp i { font-size: 1.8rem; color: #f7e2b0; }
         .letter-content {
             background: #fffdf5;
             border-radius: 28px;
@@ -218,7 +189,9 @@
             animation: fadeSlideUp 0.5s ease forwards;
             font-family: 'Playfair Display', serif;
             line-height: 1.5;
+            display: none;
         }
+        .letter-content.show { display: block; }
         @keyframes fadeSlideUp {
             from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
@@ -240,10 +213,22 @@
             cursor: pointer;
             border: 1px solid #f8bc7a;
             z-index: 999;
+            transition: 0.1s;
         }
+        .music-crystal:active { transform: scale(0.95); }
         footer { margin-top: 24px; font-size: 0.7rem; opacity: 0.8; text-align: center; color: #dbbc97; }
         .error-soft { color: #ffbc8a; margin-top: 8px; font-size: 0.8rem; }
-        i { pointer-events: none; }
+        
+        @media (max-width: 550px) {
+            .gift-header { font-size: 1.8rem; }
+            .gift-orb { width: 240px; height: 240px; }
+            #qrcodeCanvas img, #qrcodeCanvas { width: 180px; height: 180px; }
+            .timer-lux { font-size: 3.5rem; letter-spacing: 6px; }
+            .cover-royal h2 { font-size: 1.8rem; }
+            .typing-splendor { font-size: 1.3rem; padding: 25px 15px; }
+            .nav-btn { padding: 6px 16px; font-size: 0.8rem; }
+            .photo-memoir img { max-height: 220px; }
+        }
     </style>
 </head>
 <body>
@@ -254,7 +239,7 @@
         <div class="glass-pavilion">
             <div class="gift-header"><i class="fas fa-crown"></i> Celestial Keepsake <i class="fas fa-gem"></i></div>
             <div class="gift-orb" id="giftTapZone"><div id="qrcodeCanvas"></div></div>
-            <div class="hint-gold"><i class="fas fa-qrcode"></i> SCAN OR TOUCH THE GIFT <i class="fas fa-hand-peace"></i></div>
+            <div class="hint-gold"><i class="fas fa-qrcode"></i> SCAN QR OR TAP THE GIFT <i class="fas fa-hand-peace"></i></div>
             <footer><i class="fas fa-feather-alt"></i> For the one who makes life magical</footer>
         </div>
     </div>
@@ -300,7 +285,12 @@
 <div id="musicControl" class="music-crystal"><i class="fas fa-music-slash"></i></div>
 
 <script>
-    // ---------- GLOBAL STATE ----------
+    // ============================================================
+    // 🔴 YOUR VERCEL URL (ALREADY SET) 🔴
+    // ============================================================
+    const YOUR_VERCEL_URL = "https://happy-birthday-tau-brown.vercel.app";
+    // ============================================================
+
     let currentScreen = 'qr';
     let countdownInterval = null;
     let rainAnimFrame = null;
@@ -347,7 +337,7 @@
             bgAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
             bgAudio.loop = true;
             bgAudio.volume = 0.22;
-        } catch(e) { }
+        } catch(e) { console.log("audio not supported"); }
         musicBtn.onclick = () => {
             if (bgAudio) {
                 if (musicActive) {
@@ -427,7 +417,7 @@
         }, 4800);
     }
 
-    // ========== ✦ REDESIGNED ENVELOPE (luxury sealed letter) ✦ ==========
+    // Luxury Envelope Component
     function createLuxuryEnvelope() {
         const wrapper = document.createElement('div');
         wrapper.className = 'envelope-luxury';
@@ -435,12 +425,10 @@
         const envelopeCard = document.createElement('div');
         envelopeCard.className = 'envelope-card';
         
-        // Seal section
         const sealDiv = document.createElement('div');
         sealDiv.className = 'envelope-seal';
         sealDiv.innerHTML = `<i class="fas fa-envelope"></i><h4>SEALED WITH LOVE</h4>`;
         
-        // Body preview
         const bodyDiv = document.createElement('div');
         bodyDiv.className = 'envelope-body';
         bodyDiv.innerHTML = `<p><i class="fas fa-feather-alt"></i> A secret message awaits <i class="fas fa-star"></i></p>
@@ -449,17 +437,15 @@
         envelopeCard.appendChild(sealDiv);
         envelopeCard.appendChild(bodyDiv);
         
-        // Hidden letter content (initially hidden)
         const letterContent = document.createElement('div');
         letterContent.className = 'letter-content';
-        letterContent.style.display = 'none';
         letterContent.innerHTML = `<i class="fas fa-quote-left" style="font-size: 1.8rem; color:#bd6b42; margin-bottom: 12px; display: block;"></i>
                                    <strong style="font-size: 1.2rem;">My Dearest Big Sister,</strong><br/><br/>
                                    You are the poetry written in the margins of my life — the warmth that turns ordinary days into gold. 
                                    Every memory with you is a treasure I hold close. On your birthday, I wish you oceans of joy, 
-                                   galaxies of laughter, and the deepest love you’ve given me tenfold.<br/><br/>
+                                   galaxies of laughter, and the deepest love you've given me tenfold.<br/><br/>
                                    You are my hero, my guide, and my safest harbor. I love you infinitely.<br/><br/>
-                                   <i class="fas fa-feather"></i> <em>Forever your lil bro</em> <i class="fas fa-crown"></i>`;
+                                   <i class="fas fa-feather"></i> <em>Forever your little sibling</em> <i class="fas fa-crown"></i>`;
         
         wrapper.appendChild(envelopeCard);
         wrapper.appendChild(letterContent);
@@ -469,9 +455,7 @@
         envelopeCard.addEventListener('click', (e) => {
             e.stopPropagation();
             if (!isOpened) {
-                letterContent.style.display = 'block';
-                letterContent.style.animation = 'fadeSlideUp 0.5s ease';
-                // Transform envelope visual to "opened"
+                letterContent.classList.add('show');
                 sealDiv.style.background = "linear-gradient(145deg, #dbbc8c, #c99760)";
                 bodyDiv.innerHTML = `<p><i class="fas fa-check-circle"></i> Letter opened with love <i class="fas fa-heart"></i></p>
                                      <div class="wax-stamp" style="background:#a55232;"><i class="fas fa-unlock-alt"></i></div>`;
@@ -487,15 +471,35 @@
         return wrapper;
     }
 
-    // Build diary pages (6 pages total, envelope redesigned)
+    // ============================================================
+    // ✅ YOUR WHATSAPP IMAGES ADDED BACK HERE ✅
+    // ============================================================
     function buildDiaryPages() {
         diaryPagesData = [
             { type: 'typing', text: 'Happy birthday, my beautiful sister' },
-            { type: 'photo', img: 'IMG_9983.JPG', msg: 'You are the melody of my childhood, the anchor of my soul. Thank you for every hug and every prayer.', quote: '“A sister is a little bit of childhood that can never be lost.”' },
-            { type: 'photo', img: 'WhatsApp Image 2026-04-18 at 00.30.35.jpeg', msg: 'Through every season, your love has been my safe harbor. I treasure every laugh and every late night talk.', quote: '“Big sisters are the architects of beautiful memories.”' },
-            { type: 'photo', img: 'WhatsApp Image 2026-04-18 at 00.30.367.jpeg', msg: 'May your days be filled with golden light and boundless wonder. You taught me how to shine.', quote: '“To my sister: the world is softer because of you.”' },
-            { type: 'envelope' },  // REDESIGNED ENVELOPE
-            { type: 'final', finalMsg: '🎂✨ Happiest Birthday, my everything. This gift is just a small echo of my infinite love for you. You are pure magic, and I will always be your biggest fan. I love you more than all the stars. ✨🎂' }
+            { 
+                type: 'photo', 
+                img: 'IMG_9983.JPG',  // YOUR FIRST WHATSAPP IMAGE
+                msg: 'You are the melody of my childhood, the anchor of my soul. Thank you for every hug and every prayer.', 
+                quote: '“A sister is a little bit of childhood that can never be lost.”' 
+            },
+            { 
+                type: 'photo', 
+                img: 'WhatsApp Image 2026-04-18 at 00.30.35.jpeg',  // YOUR SECOND WHATSAPP IMAGE
+                msg: 'Through every season, your love has been my safe harbor. I treasure every laugh and every late night talk.', 
+                quote: '“Big sisters are the architects of beautiful memories.”' 
+            },
+            { 
+                type: 'photo', 
+                img: 'WhatsApp Image 2026-04-18 at 00.30.367.jpeg',  // YOUR THIRD WHATSAPP IMAGE
+                msg: 'May your days be filled with golden light and boundless wonder. You taught me how to shine.', 
+                quote: '“To my sister: the world is softer because of you.”' 
+            },
+            { type: 'envelope' },
+            { 
+                type: 'final', 
+                finalMsg: '🎂✨ Happiest Birthday, my everything. This gift is just a small echo of my infinite love for you. You are pure magic, and I will always be your biggest fan. I love you more than all the stars. ✨🎂' 
+            }
         ];
     }
 
@@ -510,10 +514,9 @@
             if (typingIntervalId) clearInterval(typingIntervalId);
             let charPos = 0;
             const fullMsg = data.text;
-            typingDiv.innerText = '❤️ ';
             function typeLetter() {
                 if (charPos < fullMsg.length) {
-                    typingDiv.innerText = '❤️ ' + fullMsg.slice(0, charPos+1) + (charPos % 2 === 0 ? ' ✦' : '');
+                    typingDiv.innerHTML = '<i class="fas fa-heart" style="color:#d9532f;"></i> ' + fullMsg.slice(0, charPos+1) + (charPos % 2 === 0 ? ' ✦' : '');
                     charPos++;
                 } else {
                     clearInterval(typingIntervalId);
@@ -528,6 +531,12 @@
             photoContainer.className = 'photo-memoir';
             const imgEl = document.createElement('img');
             imgEl.src = data.img;
+            imgEl.alt = "Sister memory";
+            // Error handling for images
+            imgEl.onerror = function() {
+                this.src = 'https://picsum.photos/id/104/500/350';
+                this.alt = "Beautiful memory (placeholder)";
+            };
             const msgDiv = document.createElement('div');
             msgDiv.className = 'message-card';
             msgDiv.innerHTML = `<i class="fas fa-comment-dots" style="font-size: 1.5rem; color:#c9673c;"></i><span>${data.msg}</span>`;
@@ -540,7 +549,6 @@
             dynamicContent.appendChild(photoContainer);
         }
         else if (data.type === 'envelope') {
-            // Insert the redesigned luxury envelope
             dynamicContent.appendChild(createLuxuryEnvelope());
         }
         else if (data.type === 'final') {
@@ -618,13 +626,13 @@
         if (typingIntervalId) clearInterval(typingIntervalId);
     }
 
-    // Initialization
+    // ========== QR CODE WITH YOUR VERCEL URL ==========
     function initApplication() {
         const qrContainer = document.getElementById('qrcodeCanvas');
         if (qrContainer) {
             qrContainer.innerHTML = '';
             new QRCode(qrContainer, {
-                text: window.location.href,
+                text: YOUR_VERCEL_URL,
                 width: 220,
                 height: 220,
                 colorDark: "#973e26",
